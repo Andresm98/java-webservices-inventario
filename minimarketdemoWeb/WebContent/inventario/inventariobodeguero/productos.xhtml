@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<p:link href="../resources/css/minimarketdemo.css" rel="stylesheet"
+		type="text/css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Agregar Productos" icon="pi pi-plus"
+				action="productos_nuevo" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	
+		<p:staticMessage severity="info"
+			summary="Administración de Productos - Bodeguero"></p:staticMessage>
+
+	</h:form>
+	
+	
+	<div class="ui-g-14">
+		<p:panel>
+			<h:form>
+				<p:dataTable editable="true"
+					value="#{beanInveProductos.listaProductos}" var="l"
+					style="productos" id="productos" reflow="true" paginator="true"
+					rows="5">
+					<p:column headerText="Estado del Producto" filterBy="#{l.estado}"
+						filterMatchMode="contains">
+						<h:outputText value="#{l.estado}" />
+					</p:column>
+					<p:column headerText="Código Producto"
+						filterBy="#{l.codigoProducto}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{l.codigoProducto}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{l.codigoProducto}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Nombre Producto"
+						filterBy="#{l.nombreProducto}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{l.nombreProducto}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{l.nombreProducto}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Descripción" filterBy="#{l.descripcion}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{l.descripcion}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{l.descripcion}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Costo" filterBy="#{l.costo}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{l.costo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{l.costo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="PVP" filterBy="#{l.pvp}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{l.pvp}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{l.pvp}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Stock" filterBy="#{l.stock}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{l.stock}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{l.stock}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Acciones">
+						<p:commandButton icon="pi pi-check-circle"
+							title="activar/desactivar" styleClass="ui-button-warning"
+							update="@form"
+							actionListener="#{beanInveProductos.actionListenerActivarDesactivar(l)}" />
+						<p:commandButton icon="pi pi-times-circle" title="eliminar"
+							update="@form"
+							actionListener="#{beanInveProductos.actionListenerEliminarProducto(l.idProducto)}"
+							styleClass="ui-button-danger">
+						</p:commandButton>
+						<p:column style="width:32px">
+							<p:rowEditor />
+						</p:column>
+					</p:column>
+					<p:ajax event="rowEdit"
+						listener="#{beanInveProductos.actionListenerActualizarProducto(l)}" />
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+	</div>
+
+</body>
+</html>

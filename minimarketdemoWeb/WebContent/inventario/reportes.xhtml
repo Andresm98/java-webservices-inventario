@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+
+<h:head>
+	<p:link href="../resources/css/minimarketdemo.css" rel="stylesheet"
+		type="text/css" />
+</h:head>
+
+
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<p:staticMessage severity="info"
+		summary="Reporte Productos - Administrador"></p:staticMessage>
+	<div class="card">
+		<h:form>
+			<div class="p-d-flex p-jc-between">
+				<div>
+					<br />
+					<center>
+						<p:commandButton value="Imprimir el documento"
+							styleClass="p-mr-2 p-mb-2" icon="pi pi-print">
+							<p:dataExporter type="pdf" target="tbl"
+								fileName="Reporte de los Productos" />
+						</p:commandButton>
+					</center>
+
+				</div>
+			</div>
+
+			<p:dataTable id="tbl" var="l"
+				value="#{beanInveProductos.listaProductos}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				paginator="true" rows="30" styleClass="p-mt-2">
+
+				<p:row name="header">
+					<f:facet name="header">
+						<h:outputText value="Es un reporte de los productos seleccionados" />
+					</f:facet>
+				</p:row>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Código" />
+					</f:facet>
+					<h:outputText value="#{l.codigoProducto}" />
+				</p:column>
+
+				<p:column filterBy="#{l.nombreProducto}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Nombre" />
+					</f:facet>
+					<h:outputText value="#{l.nombreProducto}" />
+
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Costo" />
+					</f:facet>
+					<h:outputText value="#{l.costo}" />
+				</p:column>
+
+				<p:column styleClass="p-text-center">
+					<f:facet name="header">
+						<h:outputText value="Categoria" />
+					</f:facet>
+					<h:outputText value="#{l.descripcion}" />
+				</p:column>
+
+				<p:column styleClass="p-text-right" filterBy="#{l.stock}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Stock" />
+					</f:facet>
+					<h:outputText value="#{l.stock}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</div>
+</body>
+</html>

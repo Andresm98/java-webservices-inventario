@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head></h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="productos" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+		<p:staticMessage severity="info" summary="Administración de Productos Bodeguero"></p:staticMessage>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<p:panelGrid columns="2">
+
+
+				<h:outputText value="Código Producto:" />
+				<p:inputText placeholder="Ejemplo Código: CCC-001" maxlength="8"
+					value="#{beanInveProductos.codigoProducto}" required="true">
+				</p:inputText>
+				<h:outputText value="Categorías" />
+				<p:selectOneMenu value="#{beanInveProductos.idCategoriaProducto}">
+					<f:selectItems
+						value="#{beanInveCateProductos.listaCategoriaProductos}" var="c"
+						itemLabel="#{c.nombreCategoria}"
+						itemValue="#{c.idCategoriaProducto}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="Nombre Producto:" />
+				<p:inputText value="#{beanInveProductos.nombreProducto}" maxlength="20"
+					required="true" requiredMessage="Nombre"  />
+				<h:outputText value="Descripcion:" />
+				<p:inputText value="#{beanInveProductos.descripcionProducto}" maxlength="50"
+					required="true" requiredMessage="Descripción" type="text" />
+					
+				<h:outputText value="IVA: " />
+				<p:selectBooleanCheckbox value="#{beanInveProductos.ivaProducto}"></p:selectBooleanCheckbox>
+				<h:outputText value="Costo:" for="input3" />
+				<p:inputNumber id="input3" value="#{beanInveProductos.costroProducto}" minValue="0.1" maxValue="10000" decimalPlaces="2"
+					required="true" requiredMessage="Costo"/>
+					
+				<h:outputText value="PVP:" for="input4" />
+				<p:inputNumber  id="input4"  value="#{beanInveProductos.pvpProducto}"
+					required="true" requiredMessage="PVP" minValue="0.1" maxValue="10000" decimalPlaces="2"/>
+					
+				<h:outputText value="Estado:" />
+				<p:selectBooleanCheckbox value="#{beanInveProductos.estadoProducto}"></p:selectBooleanCheckbox>
+				
+				<h:outputText value="Stock: " for="input5" />
+				<p:inputNumber  id="input5"  value="#{beanInveProductos.stockProducto}" 
+					required="true" requiredMessage="categoria" minValue="0.1" maxValue="1000" decimalPlaces="0" />
+					
+				<p:commandButton value="Guardar" icon="pi pi-save"
+					actionListener="#{beanInveProductos.actionListenerCrearProducto()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:panel>
+
+
+	<div></div>
+</body>
+</html>

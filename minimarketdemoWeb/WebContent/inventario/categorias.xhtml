@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+
+<h:head>
+	<p:link href="../resources/css/minimarketdemo.css" rel="stylesheet"
+		type="text/css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="productos" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<h:form>
+			<p:staticMessage severity="info"
+			summary="Administracion de Categorías Productos"></p:staticMessage>
+		<p:panel header="Ingresar Nueva Categoría" collapsed="true"
+			toggleable="true">
+			<h:panelGrid columns="2">
+				<h:outputText value="Código" />
+				<p:inputText required="true" maxlength="8"
+					value="#{beanInveCateProductos.codigoCategoria}"
+					requiredMessage="Debe ingresar el código de la categoría."/>
+				<h:outputText value="Nombre:" />
+				<p:inputText required="true" maxlength="20" value="#{beanInveCateProductos.nombre}"
+					requiredMessage="Debe ingresar el nombre de la categoría." />
+				<h:outputText value="Descripción:" />
+				<p:inputText required="true" maxlength="75"
+					value="#{beanInveCateProductos.descripcion}"
+					requiredMessage="Debe ingresar la descripción de la categoría." />
+				<p:commandButton value="Crear categoría" icon="pi pi-save"
+					action="#{beanInveCateProductos.actionListenerCrearCategoria()}"
+					update="@form,:form2" />
+			</h:panelGrid>
+		</p:panel>
+	</h:form>
+	<h:form id="form2">
+
+
+		<p:dataTable editable="true"
+			value="#{beanInveCateProductos.listaCategoriaProductos}" var="c"
+			style="productos" id="productos">
+
+			<p:column headerText="Código Categoría Producto">
+				<h:outputText value="#{c.idCategoriaProducto}" />
+			</p:column>
+			<p:column headerText="Nombre Categoría">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{c.nombreCategoria}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{c.nombreCategoria}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Descripción">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{c.descripcionCategoria}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{c.descripcionCategoria}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Código Categoria">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{c.codigoProd}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{c.codigoProd}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Acciones">
+				<p:commandButton icon="pi pi-times-circle" title="eliminar"
+					update="@form"
+					actionListener="#{beanInveCateProductos.actionListenerEliminarCategoria(c.idCategoriaProducto)}"
+					styleClass="ui-button-danger">
+					<p:confirm header="Confirmación" message="¿Desea eliminar?"
+						icon="pi pi-exclamation-triangle"></p:confirm>
+				</p:commandButton>
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:column>
+			<p:ajax event="rowEdit"
+				listener="#{beanInveCateProductos.actionListenerActualizarCategoria(c)}" />
+		</p:dataTable>
+	</h:form>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="SI" type="button"
+			styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+		<p:commandButton value="NO" type="button"
+			styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+	</p:confirmDialog>
+	<div></div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+
+<h:head>
+	<p:link href="../resources/css/minimarketdemo.css" rel="stylesheet"
+		type="text/css" />
+</h:head>
+<body>
+	
+	<div class="card">
+    <h:form>
+        <div class="p-d-flex p-jc-between">
+            <div>
+                <h5>Imprimir el reporte de los productos por nombre</h5>
+                <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="pdf" target="tbl" fileName="reporte de mis productos"/>
+                </p:commandButton>
+            </div>
+
+           
+        </div>
+
+        <p:dataTable id="tbl" var="l" value="#{beanInveProductos.listaProductos}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                     paginator="true" rows="30" styleClass="p-mt-2">
+                     
+             <p:row name="header">
+ 					<f:facet name="header">
+ 							  <h:outputText value="Es un reporte de los productos seleccionados"/>
+ 					</f:facet>            
+             </p:row>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Code"/>
+                </f:facet>
+                <h:outputText value="#{l.codigoProducto}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Nombre"/>
+                </f:facet>
+                <h:outputText value="#{l.costo}"/>
+            </p:column>
+
+            <p:column  styleClass="p-text-center">
+                <f:facet name="header">
+                    <h:outputText value="Categoria"/>
+                </f:facet>
+                <h:outputText value="#{l.descripcion}"/>
+            </p:column>
+
+            <p:column styleClass="p-text-right">
+                <f:facet name="header">
+                    <h:outputText value="Cantidad"/>
+                </f:facet>
+                <h:outputText value="#{l.stock}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</div>
+	
+	<!-- <div class="card2">
+    <h:form>
+
+        <div class="p-d-flex p-jc-between">
+            <div>
+                <h5>Standard</h5>
+                <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xls" target="tbl" fileName="customers"/>
+                </p:commandButton>
+
+                <p:commandButton value="XLXS" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xlsxstream" target="tbl" fileName="customers"/>
+                </p:commandButton>
+
+                <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="pdf" target="tbl" fileName="customers"/>
+                </p:commandButton>
+
+                <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="csv" target="tbl" fileName="customers" />
+                </p:commandButton>
+
+                <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xml" target="tbl" fileName="customers"/>
+                </p:commandButton>
+
+                <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="txt" target="tbl" fileName="customers" exporter="#{dataExporterView.textExporter}"/>
+                </p:commandButton>
+            </div>
+
+            <div>
+                <h5>Page Only</h5>
+                <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                    <p:dataExporter type="xls" target="tbl" fileName="customers" pageOnly="true"/>
+                </p:commandButton>
+
+                <p:commandButton value="XLXS" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                    <p:dataExporter type="xlsxstream" target="tbl" fileName="customers" pageOnly="true"/>
+                </p:commandButton>
+
+                <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                    <p:dataExporter type="pdf" target="tbl" fileName="customers" pageOnly="true"/>
+                </p:commandButton>
+
+                <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                    <p:dataExporter type="csv" target="tbl" fileName="customers" pageOnly="true"/>
+                </p:commandButton>
+
+                <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                    <p:dataExporter type="xml" target="tbl" fileName="customers" pageOnly="true"/>
+                </p:commandButton>
+
+                <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                    <p:dataExporter type="txt" target="tbl" fileName="customers" pageOnly="true"
+                                    exporter="#{dataExporterView.textExporter}"/>
+                </p:commandButton>
+            </div>
+        </div>
+
+        <p:dataTable id="tbl" var="customer" value="#{deLazyView.lazyModel}"
+                     sortMode="single" filteredValue="#{deLazyView.filteredCustomers}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                     paginator="true" rows="10" styleClass="p-mt-2">
+
+            <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
+                <h:outputText value="#{customer.name}"/>
+            </p:column>
+            <p:column headerText="Country" sortBy="#{customer.country}" filterBy="#{customer.country}">
+                <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                              value="#{customer.country.name}"/>
+            </p:column>
+            <p:column headerText="Company" sortBy="#{customer.company}" filterBy="#{customer.company}">
+                <h:outputText value="#{customer.company}"/>
+            </p:column>
+            <p:column headerText="Representative" sortBy="#{customer.representative}"
+                      filterBy="#{customer.representative}">
+                <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo"
+                                width="32" style="vertical-align: middle"/>
+                <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                              value="#{customer.representative.name}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</div> -->
+</body>
+</html>

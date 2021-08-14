@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Ajustes Productos L</title>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="ajustes_productosM" />
+			
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<div class="ui-g">
+		<div class="ui-g-6"></div>
+		<!-- Inicio del maestro detalle -->
+		<div class="ui-g-16">
+			<div class="ui-g-12">
+				<!-- Ajuste -->
+				<!-- Lista de productos -->
+			</div>
+
+			<!-- Fin del contenedor Maestro detalle -->
+			<div class="ui-g-12">
+
+				<h:form id="formDatos">
+					<p:staticMessage severity="info"
+						summary="Todos los Ajustes de Inventario"></p:staticMessage>
+					<p:dataTable editable="true"
+						value="#{beanInveProductos.listaAjusteProducto}" var="c"
+						style="productos" id="productos"
+						aginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						paginator="true" rows="10" styleClass="p-mt-2" reflow="true">
+						<p:column headerText="Código Producto">
+							<h:outputText value="#{c.idAjuste}" />
+						</p:column>
+						<p:column headerText="Número de Ajuste">
+							<h:outputText value="#{c.numeroAjuste}" />
+						</p:column>
+						<p:column headerText="Tipo Ajuste">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{c.tipoAjuste}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{c.tipoAjuste}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Fecha">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{c.fecha}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{c.fecha}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="¿Impreso?">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{c.impreso}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{c.impreso}" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Acciones en el Ajuste">
+							<p:commandButton icon="pi pi-print" title="Imprimir"
+								action="#{beanDocumentoAjuste.detalleDelAjusteImpresion(c.idAjuste)}"
+								styleClass="rounded-button ui-button-info ui-button-outlined">
+								<p:confirm header="Confirmación" message="¿Deseas imprimir el documento?"
+									icon="fa fa-exclamation-triangle"></p:confirm>
+							</p:commandButton>
+<!-- 							<p:commandButton icon="pi pi-search" title="Editar"
+								actionListener="#{beanInveProductos.actionListenerSeleccionarAjusteProducto(c)}"
+								styleClass="rounded-button ui-button-success"
+								update=":formEdicion" oncomplete="PF('dlgEdicion').show();">
+							</p:commandButton> -->
+						</p:column>
+						<p:ajax event="rowEdit"
+							listener="#{beanInveCateProductos.actionListenerActualizarCategoria(c)}" />
+
+					</p:dataTable>
+				</h:form>
+			</div>
+		</div>
+	</div>
+
+
+	<p:dialog header="Editar Ajuste de Productos" widgetVar="dlgEdicion"
+		modal="true">
+		<p:panel header="Puede usted agregar productos a su ajuste">
+			<h:form id="formEdicion">
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+				<h:panelGrid columns="2">
+					<h:outputText value="Id Articulo: " />
+					<p:outputLabel
+						value="#{beanInveProductos.edicionAjusteProducto.idAjuste}"></p:outputLabel>
+					<h:outputText value="Motivo del Ajuste: " />
+					<p:textEditor
+						value="#{beanInveProductos.edicionAjusteProducto.motivo}"
+						secure="false" />
+					<h:outputText value="Tipo de Ajuste" />
+					<p:selectOneMenu id="option"
+						value="#{beanInveProductos.edicionAjusteProducto.tipoAjuste}">
+						<f:selectItem itemLabel="Positivo" itemValue="P" />
+						<f:selectItem itemLabel="Negativo" itemValue="N" />
+					</p:selectOneMenu>
+
+					<p:commandButton value="Actualizar" icon="fa fa-save"
+						actionListener="#{beanInveProductos.actionListenerActualizarAjusteProducto()}"
+						update="@form:,formDatos"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+	</p:dialog>
+	<p:dialog header="Editar Ajuste de Productos" widgetVar="dlgImpresion"
+		modal="true">
+		<h:form id="formImpresion">
+			<p:messages>
+				<p:autoUpdate />
+			</p:messages>
+			<h:panelGrid columns="2">
+				<h:outputText value="Id del Usuario" />
+				
+				<h:outputText value="Correo" />
+	
+				<h:outputText value="Activo:" />
+				
+				<p:commandButton value="Actualizar" icon="fa fa-save"></p:commandButton>
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="Si" type="button"
+			styleClass="ui-confirmdialog-yes" icon="fa fa-check"></p:commandButton>
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no" icon="fa fa-times"></p:commandButton>
+	</p:confirmDialog>
+</body>
+</html>
